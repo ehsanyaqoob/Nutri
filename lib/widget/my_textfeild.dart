@@ -63,7 +63,7 @@ class MyTextField extends StatefulWidget {
     this.bordercolor,
     this.focusBorderColor,
     this.focusNode,
-    this.radius = 30.0,
+    this.radius = 16.0,
     this.height = 58,
     this.width,
     this.validator,
@@ -122,7 +122,8 @@ class _MyTextFieldState extends State<MyTextField> {
     final defaultFocusedFillColor = isDarkMode
         ? kTileDark
         : kGreyContainerGreyColor2;
-    final defaultBorderColor = isDarkMode ? kCardDark : kWhite;
+    final defaultBorderColor = isDarkMode  ? kTileDark
+        : kGreyContainerGreyColor2;
     final defaultFocusBorderColor = kDynamicText(context);
     final defaultHintColor = kDynamicHintText(context);
     final defaultLabelColor = kDynamicInputLabel(context);

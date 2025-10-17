@@ -57,8 +57,6 @@ export 'package:country_pickers/country.dart';
 export 'package:country_pickers/country_picker_dialog.dart';
 export 'package:country_pickers/utils/utils.dart';
 export 'package:nutri/controller/auth-cont.dart';
-export 'package:nutri/Screens/auth/forgot-pass.dart';
-export 'package:nutri/Screens/auth/sign-up.dart';
 export 'package:nutri/widget/common_image_view_widget.dart';
 export 'package:nutri/widget/custom_appbar.dart';
 export 'package:nutri/widget/custom_checkbox_widget.dart';

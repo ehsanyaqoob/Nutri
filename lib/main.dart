@@ -5,6 +5,7 @@ import 'package:nutri/constants/export.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final ThemeController themeController = ThemeController();
+  Get.put(AuthController());
   Get.put(ProfileController());
   Get.put(NavController());
   Get.put(ProductController());
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
           themeMode: themeController.themeMode,
           debugShowCheckedModeBanner: false,
           debugShowMaterialGrid: false,
-          initialRoute: AppLinks.splash_screen,
+          initialRoute: AppLinks.splash,
           getPages: AppRoutes.pages,
           // Global error handling and keyboard dismissal
           builder: (context, child) {
@@ -61,3 +62,14 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+// Flow summary:
+// User scans food → 
+//AI analyzes → 
+//Nutrients extracted → 
+//AI predicts meal type (Breakfast/Lunch/Dinner) →
+// User confirms →
+// Added to Daily Diary → 
+//User can view insights,
+// trends, and progress over time.

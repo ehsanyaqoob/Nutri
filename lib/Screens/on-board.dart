@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:nutri/Screens/navbar/homebarscreens/home-screen.dart';
+import 'package:nutri/constants/back-stack.dart';
 import 'package:nutri/constants/export.dart';
+import 'package:nutri/controller/splash-cont.dart';
 import 'package:nutri/extensions/media-query-extension.dart';
 import 'package:nutri/widget/floating-icons.dart';
-import 'package:nutri/widget/toasts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -16,8 +16,6 @@ class OnBoardingView extends StatefulWidget {
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _controller = PageController();
   int _currentPage = 0;
-  DateTime? _lastPressed;
-
   final List<Map<String, dynamic>> _onboardingData = [
     {
       'title': 'AI Nutrition Tracking',
@@ -91,96 +89,76 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
-  Future<bool> _onWillPop() async {
-    if (_currentPage > 0) {
-      _controller.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      return false;
-    }
-    final now = DateTime.now();
-    if (_lastPressed == null ||
-        now.difference(_lastPressed!) > const Duration(seconds: 2)) {
-      _lastPressed = now;
-      AppToast.info("Press back again to exit");
-      return false;
-    }
-    return true;
-  }
-
-  void _navigateToNext() {
+ void _navigateToNext() {
     if (_currentPage < _onboardingData.length - 1) {
       _controller.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOutCubic,
       );
     } else {
-      Get.to(
-        HomeScreen(),
-        transition: Transition.circularReveal,
-        duration: Duration(milliseconds: 500),
-      );
-      print('Navigate to main app');
+      // On last page - mark onboarding completed and navigate to auth
+      SplashController.onOnboardingCompleted();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: BackPressHandler.handleBackPress,
       child: GetBuilder<ThemeController>(
         builder: (themeController) {
           final isDark = themeController.isDarkMode;
-
           return Scaffold(
             backgroundColor: kDynamicScaffoldBackground(context),
             extendBodyBehindAppBar: true,
             body: Stack(
               children: [
-                /// Floating background icons - covering entire scaffold
                 Positioned.fill(
                   child: Stack(
                     children: [
                       FloatingIcon(
-                        asset: Assets.apple,
-                        size: 45,
+                        asset: Assets.fruiteapple,
+                        size: 60,
                         duration: const Duration(seconds: 12),
                       ),
                       FloatingIcon(
                         asset: Assets.salad,
-                        size: 38,
+                        size: 60,
                         duration: const Duration(seconds: 15),
                       ),
                       FloatingIcon(
                         asset: Assets.bread,
-                        size: 35,
+                        size: 60,
                         duration: const Duration(seconds: 18),
                       ),
                       FloatingIcon(
                         asset: Assets.egg,
-                        size: 32,
+                        size: 60,
                         duration: const Duration(seconds: 14),
                       ),
                       FloatingIcon(
                         asset: Assets.pizza,
-                        size: 40,
+                        size: 60,
                         duration: const Duration(seconds: 16),
                       ),
                       FloatingIcon(
                         asset: Assets.coffee,
-                        size: 30,
+                        size: 60,
                         duration: const Duration(seconds: 13),
                       ),
-                      // Add more icons for better coverage
                       FloatingIcon(
-                        asset: Assets.fire, // or any other food icon
-                        size: 28,
+                        asset: Assets.grapes,
+                        size: 60,
                         duration: const Duration(seconds: 17),
                       ),
                       FloatingIcon(
-                        asset: Assets.apple, // duplicate some for variety
-                        size: 33,
+                        asset: Assets.rice,
+                        size: 60,
+                        duration: const Duration(seconds: 11),
+                      ),
+                      FloatingIcon(
+                        asset: Assets.honey,
+                        size: 60,
                         duration: const Duration(seconds: 11),
                       ),
                     ],

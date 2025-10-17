@@ -102,6 +102,12 @@ class Assets {
   static const String pizza = "assets/images/pizza.svg";
   static const String salad = "assets/images/salad.svg";
     static const String coffee = "assets/images/coffee.svg";
+        static const String fruiteapple = "assets/images/fruit-apple.svg";
+    static const String rice = "assets/images/rice.svg";
+        static const String honey = "assets/images/honey.svg";
+    static const String grapes = "assets/images/grapes.svg";
+
+
 
 
 
@@ -206,6 +212,20 @@ class Assets {
   // navbar assets
   static const String homefilled = "assets/images/home-filled.svg";
   static const String homeunfilled = "assets/images/home-unfilled.svg";
+
+
+  static const String progressfilled = "assets/images/progressfilled.svg";
+  static const String progressunfilled = "assets/images/progressunfilled.svg";
+
+
+  static const String scanfilled = "assets/images/scanfilled.svg";
+  static const String scanunfilled = "assets/images/scanunfilled.svg";
+  
+  static const String rewardsfilled = "assets/images/rewardsunfilled.svg";
+  static const String rewardsunfilled = "assets/images/rewardsunfilled.svg";
+  
+  static const String menufilled = "assets/images/menufilled.svg";
+  static const String menuunfilled = "assets/images/menuunfilled.svg";
   static const String cartunfilled = "assets/images/cart-unfilled.svg";
   static const String orderfilled = "assets/images/order-filled.svg";
   static const String orderunfilled = "assets/images/order-unfilled.svg";

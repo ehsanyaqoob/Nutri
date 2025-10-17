@@ -3,12 +3,25 @@ import 'package:nutri/constants/export.dart';
 
 class NutriLoader extends StatefulWidget {
   static const int dotCount = 6;
-  static const double size = 36;
-  static const double dotSize = 8;
+  static const double defaultSize = 36;
+  static const double defaultDotSize = 8;
 
   final Color? color;
+  final double? size;
+  final double? dotSize;
+  final bool useContainer;
+  final Color? containerColor;
+  final double containerPadding;
 
-  const NutriLoader({super.key, this.color});
+  const NutriLoader({
+    super.key, 
+    this.color,
+    this.size,
+    this.dotSize,
+    this.useContainer = false,
+    this.containerColor,
+    this.containerPadding = 8,
+  });
 
   @override
   State<NutriLoader> createState() => _NutriLoaderState();
@@ -43,9 +56,12 @@ class _NutriLoaderState extends State<NutriLoader>
         final Color loaderColor =
             widget.color ?? (isDarkMode ? kPrimaryColor : kPrimaryDark);
 
-        return SizedBox(
-          width: NutriLoader.size,
-          height: NutriLoader.size,
+        final double size = widget.size ?? NutriLoader.defaultSize;
+        final double dotSize = widget.dotSize ?? NutriLoader.defaultDotSize;
+
+        final loaderWidget = SizedBox(
+          width: size,
+          height: size,
           child: AnimatedBuilder(
             animation: CurvedAnimation(
               parent: _controller,
@@ -55,10 +71,26 @@ class _NutriLoaderState extends State<NutriLoader>
               painter: _DotsPainter(
                 progress: _controller.value,
                 color: loaderColor,
+                dotSize: dotSize,
+                size: size,
               ),
             ),
           ),
         );
+
+        // Return with container if requested
+        if (widget.useContainer) {
+          return Container(
+            padding: EdgeInsets.all(widget.containerPadding),
+            decoration: BoxDecoration(
+             color: widget.containerColor ?? Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: loaderWidget,
+          );
+        }
+
+        return loaderWidget;
       },
     );
   }
@@ -67,13 +99,20 @@ class _NutriLoaderState extends State<NutriLoader>
 class _DotsPainter extends CustomPainter {
   final double progress;
   final Color color;
+  final double dotSize;
+  final double size;
 
-  _DotsPainter({required this.progress, required this.color});
+  _DotsPainter({
+    required this.progress,
+    required this.color,
+    required this.dotSize,
+    required this.size,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = size.center(Offset.zero);
-    final radius = size.width / 2.4;
+    final radius = this.size / 2.4;
 
     for (int i = 0; i < NutriLoader.dotCount; i++) {
       final double angleStep = 2 * pi / NutriLoader.dotCount;
@@ -88,11 +127,14 @@ class _DotsPainter extends CustomPainter {
         center.dx + radius * cos(angle),
         center.dy + radius * sin(angle),
       );
-      canvas.drawCircle(offset, NutriLoader.dotSize / 2, dotPaint);
+      canvas.drawCircle(offset, dotSize / 2, dotPaint);
     }
   }
 
   @override
   bool shouldRepaint(covariant _DotsPainter oldDelegate) =>
-      oldDelegate.progress != progress || oldDelegate.color != color;
+      oldDelegate.progress != progress || 
+      oldDelegate.color != color ||
+      oldDelegate.dotSize != dotSize ||
+      oldDelegate.size != size;
 }

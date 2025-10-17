@@ -1,15 +1,19 @@
+import 'package:nutri/Screens/navbar/home/home-screen.dart';
+import 'package:nutri/Screens/navbar/menu/menu-screen.dart';
+import 'package:nutri/Screens/navbar/progress/progress-screen.dart';
+import 'package:nutri/Screens/navbar/rewards/rewards-screen.dart';
+import 'package:nutri/Screens/navbar/scan/scan-screen.dart';
 import 'package:nutri/constants/export.dart';
 import 'package:nutri/widget/toasts.dart';
 
-
-class FunicaNavBar extends StatefulWidget {
-  const FunicaNavBar({super.key});
+class NutriNavBar extends StatefulWidget {
+  const NutriNavBar({super.key});
 
   @override
-  State<FunicaNavBar> createState() => _FunicaNavBarState();
+  State<NutriNavBar> createState() => _NutriNavBarState();
 }
 
-class _FunicaNavBarState extends State<FunicaNavBar> {
+class _NutriNavBarState extends State<NutriNavBar> {
   DateTime? _lastPressed;
 
   Future<bool> _onWillPop() async {
@@ -41,22 +45,22 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             child: Scaffold(
               backgroundColor: kDynamicScaffoldBackground(context),
 
-              // --- Main content ---
+              // Main Content
               body: Obx(() {
                 final navController = Get.find<NavController>();
                 return IndexedStack(
                   index: navController.currentIndex.value,
                   children: const [
-                    // HomeScreen(),
-                    // CartScreen(),
-                    // OrderScreen(),
-                    // WalletScreen(),
-                    // ProfileScreen(),
+                    HomeScreen(),
+                    ProgressScreen(),
+                    ScanScreen(),
+                    RewardsScreen(),
+                    MenuScreen(),
                   ],
                 );
               }),
 
-              // --- Responsive Bottom Nav ---
+              // Responsive Bottom Navigation
               bottomNavigationBar: Obx(() {
                 final navController = Get.find<NavController>();
                 return _buildResponsiveBottomNav(navController, context);
@@ -78,10 +82,10 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
     final bool isLargeTablet = screenWidth >= 900;
     
     // Responsive sizing
-    final double iconSize = isSmallPhone ? 22.0 : (isTablet ? 28.0 : 24.0);
-    final double fontSize = isSmallPhone ? 10.0 : (isTablet ? 14.0 : 12.0);
-    final double navBarHeight = isSmallPhone ? 60.0 : (isTablet ? 80.0 : 70.0);
-    final double iconPadding = isSmallPhone ? 6.0 : (isTablet ? 12.0 : 8.0);
+    final double iconSize = isSmallPhone ? 22.0 : (isTablet ? 26.0 : 24.0);
+    final double fontSize = isSmallPhone ? 10.0 : (isTablet ? 12.0 : 11.0);
+    final double navBarHeight = isSmallPhone ? 60.0 : (isTablet ? 75.0 : 65.0);
+    final double iconPadding = isSmallPhone ? 4.0 : (isTablet ? 8.0 : 6.0);
     
     return SafeArea(
       top: false,
@@ -92,13 +96,13 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
           color: kDynamicNavigationBarBackground(context),
           border: Border(
             top: BorderSide(
-              color: kDynamicBorder(context) ?? Colors.transparent,
+              color: kDynamicBorder(context),
               width: 0.5,
             ),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: kDynamicShadow(context),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),
@@ -120,9 +124,9 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             _buildNavItem(
               index: 1,
               navController: navController,
-              activeIcon: Assets.cartfilled,
-              inactiveIcon: Assets.cartunfilled,
-              label: "Cart",
+              activeIcon: Assets.progressfilled,
+              inactiveIcon: Assets.progressunfilled,
+              label: "Progress",
               iconSize: iconSize,
               fontSize: fontSize,
               padding: iconPadding,
@@ -131,9 +135,9 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             _buildNavItem(
               index: 2,
               navController: navController,
-              activeIcon: Assets.orderfilled,
-              inactiveIcon: Assets.orderunfilled,
-              label: "Orders",
+              activeIcon: Assets.scanfilled,
+              inactiveIcon: Assets.scanunfilled,
+              label: "Scan",
               iconSize: iconSize,
               fontSize: fontSize,
               padding: iconPadding,
@@ -142,9 +146,9 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             _buildNavItem(
               index: 3,
               navController: navController,
-              activeIcon: Assets.walletfilled,
-              inactiveIcon: Assets.walletunfilled,
-              label: "Wallet",
+              activeIcon: Assets.rewardsfilled,
+              inactiveIcon: Assets.rewardsunfilled,
+              label: "Rewards",
               iconSize: iconSize,
               fontSize: fontSize,
               padding: iconPadding,
@@ -153,9 +157,9 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             _buildNavItem(
               index: 4,
               navController: navController,
-              activeIcon: Assets.profilefilled,
-              inactiveIcon: Assets.profileunfilled,
-              label: "Profile",
+              activeIcon: Assets.menufilled,
+              inactiveIcon: Assets.menuunfilled,
+              label: "Menu",
               iconSize: iconSize,
               fontSize: fontSize,
               padding: iconPadding,
@@ -198,32 +202,22 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Icon
-              if (iconPath.endsWith('.svg'))
-                SvgPicture.asset(
-                  iconPath,
-                  height: iconSize,
-                  width: iconSize,
-                  colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                )
-              else
-                Image.asset(
-                  iconPath,
-                  height: iconSize,
-                  width: iconSize,
-                  color: iconColor,
-                ),
+              SvgPicture.asset(
+                iconPath,
+                height: iconSize,
+                width: iconSize,
+                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+              ),
               
               // Label
-              const Gap(4),
-              Flexible(
-                child: MyText(
-                  text: label,
-                  size: fontSize,
-                  weight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color: textColor,
-                  maxLines: 1,
-                  textOverflow: TextOverflow.ellipsis,
-                ),
+              const SizedBox(height: 2),
+              MyText(
+                text: label,
+                size: fontSize,
+                weight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                color: textColor,
+                maxLines: 1,
+                textOverflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -234,7 +228,7 @@ class _FunicaNavBarState extends State<FunicaNavBar> {
 }
 
 class NavController extends GetxController {
-  var currentIndex = 0.obs;
+  final RxInt currentIndex = 0.obs;
 
   void changeIndex(int index) {
     currentIndex.value = index;

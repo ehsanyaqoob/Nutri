@@ -1,19 +1,20 @@
+import 'package:nutri/constants/back-stack.dart';
 import 'package:nutri/constants/export.dart';
+import 'package:nutri/widget/home-widgets/home-infocard.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class BookMarkScreen extends StatefulWidget {
+  const BookMarkScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<BookMarkScreen> createState() => _BookMarkScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _BookMarkScreenState extends State<BookMarkScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ThemeController>(
       builder: (themeController) {
         final bool isDarkMode = themeController.isDarkMode;
-
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
@@ -27,7 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Scaffold(
             backgroundColor: kDynamicScaffoldBackground(context),
-            
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: AppSizes.DEFAULT,
+                child: Column(
+                  children: [
+                                       ],
+                ),
+              ),
+            ),
           ),
         );
       },

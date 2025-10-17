@@ -3,13 +3,13 @@ import 'package:nutri/constants/export.dart';
 class UserInfoRow extends StatelessWidget {
   final VoidCallback? onAvatarTap;
   final VoidCallback? onNotificationTap;
-  final VoidCallback? onFavoriteTap;
+  final VoidCallback? onBookmarkTap;
 
   const UserInfoRow({
     Key? key,
     this.onAvatarTap,
     this.onNotificationTap,
-    this.onFavoriteTap,
+    this.onBookmarkTap,
   }) : super(key: key);
 
   String getGreeting() {
@@ -35,10 +35,10 @@ class UserInfoRow extends StatelessWidget {
             Bounce(
               onTap: onAvatarTap ?? () {},
               child: CircleAvatar(
-                radius: 30,
+                radius: 24,
                 backgroundColor: kDynamicBorder(context),
                 child: CircleAvatar(
-                  radius: 28,
+                  radius: 22,
                   backgroundColor: kDynamicContainer(context),
                   backgroundImage: controller.profileImage != null
                       ? FileImage(controller.profileImage!)
@@ -46,7 +46,7 @@ class UserInfoRow extends StatelessWidget {
                   child: controller.profileImage == null
                       ? SvgPicture.asset(
                           Assets.personfilled,
-                          height: 28,
+                          height: 22,
                           colorFilter: ColorFilter.mode(
                             kDynamicIcon(context),
                             BlendMode.srcIn,
@@ -56,31 +56,26 @@ class UserInfoRow extends StatelessWidget {
                 ),
               ),
             ),
-
-            const SizedBox(width: 20),
-
-            // Greeting & Name
+           Gap(20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MyText(
                     text: getGreeting(),
-                    size: 14,
+                    size: 12.0,
                     weight: FontWeight.w600,
                     color: kDynamicText(context).withOpacity(0.7),
                   ),
                   MyText(
                     text: controller.userName,
-                    size: 18,
+                    size: 14.0,
                     weight: FontWeight.bold,
                     color: kDynamicText(context),
                   ),
                 ],
               ),
             ),
-
-            // Notifications & Heart Icons
             Row(
               children: [
                 IconButton(
@@ -94,7 +89,7 @@ class UserInfoRow extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: onFavoriteTap ?? () {},
+                  onPressed: onBookmarkTap ?? () {},
                   icon: SvgPicture.asset(
                     Assets.heartunfilled,
                     colorFilter: ColorFilter.mode(

@@ -13,7 +13,7 @@ class MyButtonWithIcon extends StatelessWidget {
     this.param,
     this.height = 50,
     this.width,
-    this.radius = 18.0,
+this.radius = 16.0, // Modern, clean rounded corners
     this.fontSize,
     this.fontColor,
     this.backgroundColor,
@@ -29,6 +29,11 @@ class MyButtonWithIcon extends StatelessWidget {
     this.loaderColor,
     this.iconColor,
     this.iconSize = 18,
+    this.loaderSize = 20,
+    this.loaderDotSize = 4,
+    this.useLoaderContainer = true,
+    this.loaderContainerColor,
+    this.loaderContainerPadding = 4,
   });
 
   final String text;
@@ -48,6 +53,13 @@ class MyButtonWithIcon extends StatelessWidget {
   final bool hasShadow, hasGradient, isActive, isLoading;
   final double mTop, mBottom, mHoriz;
   final Color? loaderColor;
+
+  // New loader customization parameters
+  final double loaderSize;
+  final double loaderDotSize;
+  final bool useLoaderContainer;
+  final Color? loaderContainerColor;
+  final double loaderContainerPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +115,16 @@ class MyButtonWithIcon extends StatelessWidget {
             color: Colors.transparent,
             child: Center(
               child: isLoading
-                  ? NutriLoader(color: effectiveLoaderColor)
+                  ? NutriLoader(
+                      size: loaderSize,
+                      dotSize: loaderDotSize,
+                      color: effectiveLoaderColor,
+                      // useContainer: useLoaderContainer,
+                      // containerColor:
+                      //     loaderContainerColor ??
+                      //     _getLoaderContainerColor(bgColor, context),
+                      // containerPadding: loaderContainerPadding,
+                    )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -135,7 +156,21 @@ class MyButtonWithIcon extends StatelessWidget {
       return kDynamicText(context);
     }
     final brightness = ThemeData.estimateBrightnessForColor(buttonBgColor);
-    return brightness == Brightness.dark ? kWhite : kBlack;
+    return brightness == Brightness.dark ? Colors.white : Colors.black;
+  }
+
+  // Helper method to determine loader container color
+  Color _getLoaderContainerColor(Color? buttonBgColor, BuildContext context) {
+    if (buttonBgColor == null) {
+      return kDynamicContainer(context);
+    }
+
+    final brightness = ThemeData.estimateBrightnessForColor(buttonBgColor);
+
+    // For dark backgrounds, use light container; for light backgrounds, use dark container
+    return brightness == Brightness.dark
+        ? Colors.white.withOpacity(0.2)
+        : Colors.black.withOpacity(0.1);
   }
 }
 
@@ -151,7 +186,7 @@ class MyButton extends StatelessWidget {
     this.fontColor,
     this.fontSize,
     this.outlineColor,
-    this.radius = 30.0,
+this.radius = 16.0, // Modern, clean rounded corners
     this.choiceIcon,
     this.isleft = false,
     this.mhoriz = 0,
@@ -165,6 +200,11 @@ class MyButton extends StatelessWidget {
     this.isLoading = false,
     this.loaderColor,
     this.param,
+    this.loaderSize = 20,
+    this.loaderDotSize = 4,
+    this.useLoaderContainer = true,
+    this.loaderContainerColor,
+    this.loaderContainerPadding = 4,
   });
 
   final String buttonText;
@@ -184,6 +224,13 @@ class MyButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final bool isLoading;
   final Color? loaderColor;
+
+  // New loader customization parameters
+  final double loaderSize;
+  final double loaderDotSize;
+  final bool useLoaderContainer;
+  final Color? loaderContainerColor;
+  final double loaderContainerPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -242,8 +289,15 @@ class MyButton extends StatelessWidget {
             child: Center(
               child: isLoading
                   ? NutriLoader(
+                      size: loaderSize,
+                      dotSize: loaderDotSize,
                       color: effectiveLoaderColor,
-                    ) // Pass the loader color
+                      // useContainer: useLoaderContainer,
+                      // containerColor:
+                      //     loaderContainerColor ??
+                      //     _getLoaderContainerColor(bgColor, context),
+                      // containerPadding: loaderContainerPadding,
+                    )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -286,6 +340,20 @@ class MyButton extends StatelessWidget {
     final brightness = ThemeData.estimateBrightnessForColor(buttonBgColor);
 
     // Return contrasting color based on button background
-    return brightness == Brightness.dark ? kWhite : kBlack;
+    return brightness == Brightness.dark ? Colors.white : Colors.black;
+  }
+
+  // Helper method to determine loader container color
+  Color _getLoaderContainerColor(Color? buttonBgColor, BuildContext context) {
+    if (buttonBgColor == null) {
+     return kDynamicContainer(context);
+    }
+
+    final brightness = ThemeData.estimateBrightnessForColor(buttonBgColor);
+
+    // For dark backgrounds, use light container; for light backgrounds, use dark container
+    return brightness == Brightness.dark
+        ? Colors.white.withOpacity(0.2)
+        : Colors.black.withOpacity(0.1);
   }
 }

@@ -69,15 +69,14 @@ class AppToast {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(icon, color: Colors.white, size: 20),
-                    const SizedBox(width: 12),
+                   Gap(12),
                     Expanded(
-                      child: Text(
+                      child: MyText(
+                        text: 
                         message,
-                        style: const TextStyle(
                           color: Colors.white,
-                          fontSize: _toastFontSize,
-                          fontWeight: FontWeight.w500,
-                        ),
+                          size: _toastFontSize,
+                          weight: FontWeight.w500,
                         textAlign: TextAlign.center,
                       ),
                     ),

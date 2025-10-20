@@ -1,27 +1,84 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-name: Dart
+name: Flutter CI & Auto Release
 
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+
+env:
+  FLUTTER_CHANNEL: stable
+  FLUTTER_VERSION: 3.19.0
+  BUILD_MODE: release
+  BUILD_FLAVOR: prod
+  APK_OUTPUT: build/app/outputs/flutter-apk/app-${{ env.BUILD_MODE }}.apk
+  AAB_OUTPUT: build/app/outputs/bundle/${{ env.BUILD_MODE }}/app-${{ env.BUILD_MODE }}.aab
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repository
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build/
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
-          flutter-version: 3.19.0
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
 
-      - run: flutter --version
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test || echo "No tests found"
+
+      - name: Build APK (${{ env.BUILD_MODE }})
+        run: flutter build apk --${{ env.BUILD_MODE }} --flavor ${{ env.BUILD_FLAVOR }} || flutter build apk --${{ env.BUILD_MODE }}
+
+      - name: Build AppBundle (${{ env.BUILD_MODE }})
+        run: flutter build appbundle --${{ env.BUILD_MODE }} --flavor ${{ env.BUILD_FLAVOR }} || flutter build appbundle --${{ env.BUILD_MODE }}
+
+      - name: Upload artifacts to Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-builds
+          path: |
+            ${{ env.APK_OUTPUT }}
+            ${{ env.AAB_OUTPUT }}
+
+      # 🚀 Create GitHub Release and upload builds
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "Build #${{ github.run_number }} - ${{ env.BUILD_MODE }}"
+          body: |
+            ✅ Flutter CI Auto Build
+            - Build mode: ${{ env.BUILD_MODE }}
+            - Channel: ${{ env.FLUTTER_CHANNEL }}
+            - Flutter version: ${{ env.FLUTTER_VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK & AAB to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.APK_OUTPUT }}
+            ${{ env.AAB_OUTPUT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

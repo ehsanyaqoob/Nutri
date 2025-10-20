@@ -3,9 +3,8 @@ import 'dart:ui';
 import 'package:nutri/constants/export.dart';
 
 void main() async {
-
-  
-  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Flutter bindings and controllers
+ WidgetsFlutterBinding.ensureInitialized();
   final ThemeController themeController = ThemeController();    
   Get.put(AuthController());
   Get.put(ProfileController());

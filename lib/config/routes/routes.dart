@@ -1,18 +1,7 @@
 
-import 'package:nutri/Screens/auth/auth-swipe-screen.dart';
-import 'package:nutri/Screens/book-mark-screen.dart';
-import 'package:nutri/Screens/navbar/home/home-screen.dart';
-import 'package:nutri/Screens/navbar/menu/menu-screen.dart';
-import 'package:nutri/Screens/navbar/profile/profile-screen.dart';
-import 'package:nutri/Screens/navbar/progress/progress-screen.dart';
-import 'package:nutri/Screens/navbar/rewards/rewards-screen.dart';
-import 'package:nutri/Screens/navbar/scan/scan-screen.dart';
-import 'package:nutri/Screens/notification-screen.dart';
 import 'package:nutri/constants/export.dart';
-import 'package:nutri/Screens/splash.dart';
-import 'package:nutri/Screens/on-board.dart';
 
-// Route configuration model
+
 class RouteConfig {
   final String name;
   final Widget Function() page;
@@ -46,7 +35,14 @@ class AppLinks {
   static const settings = '/settings';
   static const foodDetail = '/food_detail';
   static const mealPlan = '/meal_plan';
-  
+  // NEW: Menu Screen Routes
+  static const editProfile = '/edit_profile';
+  static const address = '/address';
+  static const payment = '/payment';
+  static const security = '/security';
+  static const privacyPolicy = '/privacy_policy';
+  static const helpCenter = '/help_center';
+  static const inviteFriends = '/invite_friends';
 }
 
 class AppRoutes {
@@ -61,7 +57,7 @@ class AppRoutes {
 
     AppLinks.onboard: RouteConfig(
       name: AppLinks.onboard,
-      page: () => OnBoardingView(),
+      page: () => OnboardingView(),
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 500),
       isOffAll: false,
@@ -80,7 +76,8 @@ class AppRoutes {
       transition: Transition.circularReveal,
       transitionDuration: const Duration(milliseconds: 600),
       isOffAll: true,
-    ),AppLinks.navbar: RouteConfig(
+    ),
+    AppLinks.navbar: RouteConfig(
       name: AppLinks.navbar,
       page: () => NutriNavBar(),
       transition: Transition.circularReveal,
@@ -111,59 +108,74 @@ class AppRoutes {
       transitionDuration: const Duration(milliseconds: 600),
       isOffAll: false,
     ),
- AppLinks.scan: RouteConfig(
+    AppLinks.scan: RouteConfig(
       name: AppLinks.scan,
       page: () => ScanScreen(),
       transition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 450),
     ),
-     AppLinks.progress: RouteConfig(
+    AppLinks.progress: RouteConfig(
       name: AppLinks.progress,
       page: () => ProgressScreen(),
       transition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 450),
     ),
-     AppLinks.rewards: RouteConfig(
+    AppLinks.rewards: RouteConfig(
       name: AppLinks.rewards,
-      page: () => RewardsScreen(),
+      page: () => MealScreen(),
       transition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 450),
     ),
-     AppLinks.menu: RouteConfig(
+    AppLinks.menu: RouteConfig(
       name: AppLinks.menu,
       page: () => MenuScreen(),
       transition: Transition.cupertino,
       transitionDuration: Duration(milliseconds: 450),
     ),
-    // COMMENTED OUT - UNCOMMENT WHEN SCREENS ARE AVAILABLE
-    /*
-    AppLinks.login: RouteConfig(
-      name: AppLinks.login,
-      page: () => LoginScreen(),
+
+    // NEW: Menu Screen Routes
+    AppLinks.editProfile: RouteConfig(
+      name: AppLinks.editProfile,
+      page: () => EditProfileScreen(),
       transition: Transition.rightToLeft,
-      transitionDuration: Duration(milliseconds: 400),
-      isOffAll: true,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
-  
-    AppLinks.scan: RouteConfig(
-      name: AppLinks.scan,
-      page: () => ScanScreen(),
-      transition: Transition.upToDown,
-      transitionDuration: Duration(milliseconds: 450),
+    AppLinks.address: RouteConfig(
+      name: AppLinks.address,
+      page: () => AddressScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
-    AppLinks.diary: RouteConfig(
-      name: AppLinks.diary,
-      page: () => DiaryScreen(),
-      transition: Transition.leftToRight,
-      transitionDuration: Duration(milliseconds: 450),
+    AppLinks.payment: RouteConfig(
+      name: AppLinks.payment,
+      page: () => PaymentScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
-    AppLinks.profile: RouteConfig(
-      name: AppLinks.profile,
-      page: () => ProfileScreen(),
-      transition: Transition.downToUp,
-      transitionDuration: Duration(milliseconds: 500),
+    AppLinks.security: RouteConfig(
+      name: AppLinks.security,
+      page: () => SecurityScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
     ),
-    */
+    AppLinks.privacyPolicy: RouteConfig(
+      name: AppLinks.privacyPolicy,
+      page: () => PrivacyPolicyScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
+    AppLinks.helpCenter: RouteConfig(
+      name: AppLinks.helpCenter,
+      page: () => HelpCenterScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
+    AppLinks.inviteFriends: RouteConfig(
+      name: AppLinks.inviteFriends,
+      page: () => InviteFriendsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
   };
 
   // Get all pages for GetMaterialApp

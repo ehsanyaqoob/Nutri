@@ -1,7 +1,5 @@
 
-import 'package:nutri/Screens/settings.dart';
 import 'package:nutri/constants/export.dart';
-import 'package:nutri/widget/toasts.dart';
 
 class ProfileScreen extends StatefulWidget {
  const ProfileScreen({super.key});

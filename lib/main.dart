@@ -1,16 +1,12 @@
-import 'dart:ui';
-
 import 'package:nutri/constants/export.dart';
 
 void main() async {
   // Initialize Flutter bindings and controllers
- WidgetsFlutterBinding.ensureInitialized();
-  final ThemeController themeController = ThemeController();    
+  WidgetsFlutterBinding.ensureInitialized();
+  final ThemeController themeController = ThemeController();
   Get.put(AuthController());
   Get.put(ProfileController());
   Get.put(NavController());
-  Get.put(ProductController());
-  Get.put(FavouritesController(), permanent: true);
   await GetStorage.init();
   await themeController.initialize();
   // Put dependencies in GetX

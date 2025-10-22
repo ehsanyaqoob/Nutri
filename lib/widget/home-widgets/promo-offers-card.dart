@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutri/constants/app_colors.dart';
-import 'package:nutri/widget/my_text_widget.dart';
+import 'package:nutri/widget/common/my_text_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../constants/export.dart';

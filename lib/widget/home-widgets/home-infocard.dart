@@ -76,29 +76,15 @@ class UserInfoRow extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: onNotificationTap ?? () {},
-                  icon: SvgPicture.asset(
-                    Assets.notificationunfilled,
-                    colorFilter: ColorFilter.mode(
-                      kDynamicIcon(context),
-                      BlendMode.srcIn,
-                    ),
-                  ),
+            IconButton(
+              onPressed: onNotificationTap ?? () {},
+              icon: SvgPicture.asset(
+                Assets.notificationunfilled,
+                colorFilter: ColorFilter.mode(
+                  kDynamicIcon(context),
+                  BlendMode.srcIn,
                 ),
-                IconButton(
-                  onPressed: onBookmarkTap ?? () {},
-                  icon: SvgPicture.asset(
-                    Assets.heartunfilled,
-                    colorFilter: ColorFilter.mode(
-                      kDynamicIcon(context),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         );

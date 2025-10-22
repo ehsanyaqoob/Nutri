@@ -1,8 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nutri/constants/export.dart' hide Country;
-import 'package:nutri/widget/dot-loader.dart';
-import 'package:nutri/widget/toasts.dart';
+import 'package:nutri/widget/common/dot-loader.dart';
+import 'package:nutri/widget/common/toasts.dart';
 
 class FillUpProfileDetailScreen extends StatefulWidget {
   const FillUpProfileDetailScreen({super.key});
@@ -77,7 +77,7 @@ class _FillUpProfileDetailScreenState extends State<FillUpProfileDetailScreen> {
       // Update profile data
       _controller.updateUserName(profileData['fullName']!);
       _controller.updateEmail(profileData['email']!);
-      _controller.updatePhone(profileData['phone']!);
+      // _controller.updatePhone(profileData['phone']!);
 
       AppToast.success('Profile updated successfully');
 

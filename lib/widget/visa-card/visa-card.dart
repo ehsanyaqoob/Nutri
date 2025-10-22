@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutri/constants/export.dart';
 import 'package:intl/intl.dart';
 import 'package:nutri/generated/assets.dart';
-import 'package:nutri/widget/my_text_widget.dart';
+import 'package:nutri/widget/common/my_text_widget.dart';
 
 class CustomVisaCard extends StatefulWidget {
   final String name;

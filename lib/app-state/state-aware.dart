@@ -1,5 +1,3 @@
-import 'package:nutri/app-state/app-state-lifecycle.dart';
-
 import '../constants/export.dart';
 
 class StateAwareWidget extends StatelessWidget {

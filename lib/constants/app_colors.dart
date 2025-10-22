@@ -288,18 +288,17 @@ extension ThemeContextExtensions on BuildContext {
   Color get success => kDynamicSuccess(this);
   Color get warning => kDynamicWarning(this);
 }
-// 🌿 Primary Brand Colors
-const kPrimaryColor = Color(0xFF9CD84E);   // Fresh Lime Green (buttons, highlights)
-const kPrimaryDark  = Color(0xFF6FAE2E);   // Darker green for dark mode accents
+// 🍊 Primary Brand Colors
+const kPrimaryColor = Color(0xFFFF8C1A);   
+const kPrimaryDark  = Color(0xFFE67A00);   
 
-// ⚪ Secondary / Surface Colors
-const kSecondaryColor = Color(0xFFF6F8FA); // Soft light gray for cards & surfaces
-const kSecondaryDark  = Color(0xFF2C2C2E); // Subtle dark gray for dark surfaces
+// 🩶 Secondary / Surface Colors
+const kSecondaryColor = Color(0xFFD4D0C8); 
+const kSecondaryDark  = Color(0xFF2C2C2E); 
 
 // 🩶 Backgrounds
-const kLightBackground = Color(0xFFFFFFFF); // Clean white for light mode
-const kDarkBackground  = Color(0xFF1C1C1E); // Deep charcoal for dark mode
-
+const kLightBackground = Color(0xFFFFFFFF); 
+const kDarkBackground  = Color(0xFF1C1C1E);
 
 const kCardDark = Color(0xFF2C2C2E);
 const kTileLight = Color(0xFFF7F7F7);

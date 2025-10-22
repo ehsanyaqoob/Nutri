@@ -8,91 +8,9 @@ class Assets {
   static const String fontsFigtreeMedium = "assets/fonts/FigtreeMedium.ttf";
   static const String fontsFigtreeRegular = "assets/fonts/FigtreeRegular.ttf";
   static const String fontsFigtreeSemiBold = "assets/fonts/FigtreeSemiBold.ttf";
-  static const String imagesAcRepair = "assets/images/ac_repair.png";
-  static const String imagesAcRepair2 = "assets/images/ac_repair2.png";
-  static const String imagesAccountPrivacyy =
-      "assets/images/account_privacyy.png";
-  static const String imagesAddFriend = "assets/images/add_friend.png";
-  static const String imagesAddNewBlue = "assets/images/add_new_blue.png";
-  static const String imagesAddToCartIcon =
-      "assets/images/add_to_cart_icon.png";
-  static const String imagesAll = "assets/images/All.png";
-  static const String imagesAllowLocationDialog =
-      "assets/images/allow_location_dialog.png";
-  static const String imagesAppbarAvatar = "assets/images/appbar_avatar.png";
-  static const String imagesArrowBack = "assets/images/arrow_back.png";
-  static const String imagesArrowBackWhite =
-      "assets/images/arrow_back_white.png";
-  static const String imagesArrowDown = "assets/images/arrow_down.png";
-  static const String imagesArrowDownBlue = "assets/images/arrow_down_blue.png";
-  static const String imagesArrowDownDropdown =
-      "assets/images/arrow-down_dropdown.png";
-  static const String imagesArrowLeft = "assets/images/arrow-left.png";
-  static const String imagesArrowRdownGrey =
-      "assets/images/arrow-rdown_grey.png";
-  static const String imagesArrowRight = "assets/images/arrow-right.png";
-  static const String imagesArrowRightBlue =
-      "assets/images/arrow_right_blue.png";
-  static const String imagesArrowRightGreyNew =
-      "assets/images/arrow-right-grey_new.png";
-  static const String imagesArtistChat = "assets/images/artist_chat.png";
-  static const String imagesArtistProfile = "assets/images/artist_profile.png";
-  static const String imagesAttachCircle = "assets/images/attach-circle.png";
-  static const String imagesAuto = "assets/images/auto.png";
-  static const String imagesBasketIcon = "assets/images/basket_icon.png";
-  static const String imagesBlockDialogIcon =
-      "assets/images/block_dialog_icon.png";
-  static const String imagesBooks = "assets/images/books.png";
-  static const String imagesBorderStar = "assets/images/border_star.png";
-  static const String imagesBorderStarBlue =
-      "assets/images/border_star_blue.png";
-  static const String imagesBosstDialog = "assets/images/bosst_dialog.png";
-  static const String imagesBueaty = "assets/images/bueaty.png";
-  static const String imagesCalendar = "assets/images/calendar.png";
-  static const String imagesCall = "assets/images/call.png";
-  static const String imagesCallGrey = "assets/images/call_grey.png";
-  static const String imagesCamera = "assets/images/camera.png";
-  static const String imagesCancel = "assets/images/cancel.png";
-  static const String imagesCancelBlue = "assets/images/cancel_blue.png";
-  static const String imagesChangePassword =
-      "assets/images/change_password.png";
-  static const String imagesChatAvatar = "assets/images/chat_avatar.png";
-  static const String imagesChatAvatar2 = "assets/images/chat_avatar_2.png";
-  static const String imagesChatAvatar3 = "assets/images/chat_avatar_3.png";
-  static const String imagesChatAvatarMessage =
-      "assets/images/chat_avatar_message.png";
-  static const String imagesChatAvatarMessage2 =
-      "assets/images/chat_avatar_message_2.png";
-  static const String imagesChatUserBadge = "assets/images/chat_user_badge.png";
-  static const String imagesCheck = "assets/images/check.png";
-  static const String imagesCheckInboxDailog =
-      "assets/images/check_inbox_dailog.png";
-  static const String imagesClock = "assets/images/clock.png";
-  static const String imagesCloud = "assets/images/cloud.png";
-  static const String imagesComment = "assets/images/comment.png";
-  static const String imagesCrown = "assets/images/crown.png";
-  static const String imagesDeleteItemDialog =
-      "assets/images/delete_item_dialog.png";
-  static const String imagesDiskTrack = "assets/images/disk_track.png";
-  static const String imagesDislike = "assets/images/dislike.png";
-  static const String imagesDislikeEmpty = "assets/images/dislike_empty.png";
-  static const String imagesDoubleTick = "assets/images/double_tick.png";
-  static const String imagesEditBlue = "assets/images/edit_blue.png";
-  static const String imagesEditProfile = "assets/images/edit_profile.png";
-  static const String imagesEditWhite = "assets/images/edit_white.png";
-  static const String imagesElectrician = "assets/images/Electrician.png";
-  static const String imagesElectronics = "assets/images/electronics.png";
-  static const String imagesEmptyHeart = "assets/images/empty_heart.png";
-  static const String imagesEvent = "assets/images/event.png";
-  static const String imagesEventCalender = "assets/images/event_calender.png";
-  static const String imagesEventIcon = "assets/images/event_icon.png";
-  static const String imagesFaceId = "assets/images/face-id.png";
-  static const String imagesFacebg = "assets/images/facebg.png";
-  static const String imagesFaceidBg = "assets/images/faceid_bg.png";
-  static const String imagesFaqs = "assets/images/faqs.png";
-  static const String imagesFashion = "assets/images/Fashion.png";
   static const String fire = "assets/images/fire.svg";
-
+  static const String camera = "assets/images/camera.svg";
+  static const String gallery = "assets/images/gallery.svg";
   static const String veges = "assets/images/veges.png";
   static const String veg1 = "assets/images/veg1.png";
   static const String spinach = "assets/images/spinach.png";
@@ -101,16 +19,11 @@ class Assets {
   static const String bread = "assets/images/bread.svg";
   static const String pizza = "assets/images/pizza.svg";
   static const String salad = "assets/images/salad.svg";
-    static const String coffee = "assets/images/coffee.svg";
-        static const String fruiteapple = "assets/images/fruit-apple.svg";
-    static const String rice = "assets/images/rice.svg";
-        static const String honey = "assets/images/honey.svg";
-    static const String grapes = "assets/images/grapes.svg";
-
-
-
-
-
+  static const String coffee = "assets/images/coffee.svg";
+  static const String fruits = "assets/images/fruits.svg";
+  static const String rice = "assets/images/rice.svg";
+  static const String honey = "assets/images/honey.svg";
+  static const String grapes = "assets/images/grapes.svg";
   static const String funicadark = "assets/images/funica-dark.png";
   static const String funicalight = "assets/images/funica-light.png";
   static const String funicalampdark = "assets/images/funicainitial.jpg";
@@ -118,7 +31,6 @@ class Assets {
   static const String art = "assets/images/art.jpg";
   static const String smsfilled = "assets/images/sms.svg";
   static const String monitor = "assets/images/monitors.jpg";
-
   static const String emailfilled = "assets/images/email-filled.svg";
   static const String emailunfilled = "assets/images/email-unfilled.svg";
   static const String lockfilled = "assets/images/loack-filled.svg";
@@ -132,11 +44,9 @@ class Assets {
   static const String privacy = "assets/images/privacy.svg";
   static const String help = "assets/images/help.svg";
   static const String invite = "assets/images/invite.svg";
-
   static const String phonefilled = "assets/images/phonefilled.svg";
   static const String phoneunfilled = "assets/images/phoneunfilled.svg";
   static const String biofilled = "assets/images/biofilled.svg";
-
   static const String pencilfilled = "assets/images/pencilfilled.svg";
   static const String calendarfilled = "assets/images/calendarfilled.svg";
 
@@ -212,20 +122,23 @@ class Assets {
   // navbar assets
   static const String homefilled = "assets/images/home-filled.svg";
   static const String homeunfilled = "assets/images/home-unfilled.svg";
-
+  static const String mealfilled = "assets/images/mealfilled.svg";
+  static const String mealunfilled = "assets/images/mealunfilled.svg";
+    static const String firefilled = "assets/images/firefilled.svg";
+  static const String fireunfilled = "assets/images/fireunfilled.svg";
+    static const String menufilled = "assets/images/menufilled.svg";
+  static const String menuunfilled = "assets/images/menuunfilled.svg";
+    static const String addfilled = "assets/images/addfilled.svg";
 
   static const String progressfilled = "assets/images/progressfilled.svg";
   static const String progressunfilled = "assets/images/progressunfilled.svg";
 
-
   static const String scanfilled = "assets/images/scanfilled.svg";
   static const String scanunfilled = "assets/images/scanunfilled.svg";
-  
+
   static const String rewardsfilled = "assets/images/rewardsunfilled.svg";
   static const String rewardsunfilled = "assets/images/rewardsunfilled.svg";
-  
-  static const String menufilled = "assets/images/menufilled.svg";
-  static const String menuunfilled = "assets/images/menuunfilled.svg";
+
   static const String cartunfilled = "assets/images/cart-unfilled.svg";
   static const String orderfilled = "assets/images/order-filled.svg";
   static const String orderunfilled = "assets/images/order-unfilled.svg";
@@ -254,4 +167,8 @@ class Assets {
   static const String visa = "assets/images/visa.svg";
   static const String visacard = "assets/images/visacard.svg";
   static const String ahead = "assets/images/ahead.svg";
+
+    static const String arrowback = "assets/images/arrowback.svg";
+  static const String arrowforward = "assets/images/arrowforward.svg";
+
 }

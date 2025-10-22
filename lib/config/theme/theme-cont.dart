@@ -10,7 +10,6 @@ class ThemeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Listen to system theme changes
     WidgetsBinding.instance.window.onPlatformBrightnessChanged =
         _handleSystemThemeChange;
   }

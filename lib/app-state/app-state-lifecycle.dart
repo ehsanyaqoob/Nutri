@@ -1,6 +1,4 @@
-import 'package:nutri/controller/fav-cont.dart';
 import '../constants/export.dart';
-
 class AppLifecycleManager extends GetxController with WidgetsBindingObserver {
   final Rx<AppLifecycleState> _currentState = AppLifecycleState.resumed.obs;
   final RxBool _isInForeground = true.obs;
@@ -59,35 +57,22 @@ class AppLifecycleManager extends GetxController with WidgetsBindingObserver {
     _isAppPaused.value = false;
     _isAppKilled.value = false;
     debugPrint('🔄 App Resumed - Rebuilding UI, restoring state');
-    
-    // Notify all controllers about app resume
-    Get.find<FavouritesController>().onAppResumed();
-    // Add other controllers here
   }
 
   void _onAppInactive() {
     _isInForeground.value = false;
     debugPrint('⏸️ App Inactive - Saving temporary state');
-    
-    // Save any temporary states
-    Get.find<FavouritesController>().onAppInactive();
   }
 
   void _onAppPaused() {
     _isInForeground.value = false;
     _isAppPaused.value = true;
     debugPrint('🚫 App Paused - Persisting important data');
-    
-    // Persist critical data
-    Get.find<FavouritesController>().onAppPaused();
   }
 
   void _onAppDetached() {
     _isAppKilled.value = true;
     debugPrint('💀 App Detached/Killed - Final cleanup');
-    
-    // Perform final cleanup
-    Get.find<FavouritesController>().onAppDetached();
   }
 
   void _onAppHidden() {
@@ -95,9 +80,7 @@ class AppLifecycleManager extends GetxController with WidgetsBindingObserver {
     debugPrint('👻 App Hidden - Background operations');
   }
 
-  // Method to manually trigger state save (for important operations)
   void forceSaveState() {
     debugPrint('💾 Force saving app state');
-    Get.find<FavouritesController>().persistFavourites();
   }
 }

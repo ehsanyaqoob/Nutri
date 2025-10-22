@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:get/get.dart';
-import 'package:nutri/Screens/navbar/home/home-screen.dart';
 import 'package:nutri/constants/export.dart';
-import 'package:nutri/services/storage-services.dart';
+import 'package:nutri/Screens/common/on-board.dart'; // Add this import
 
 class SplashController extends GetxController {
   RxBool isTime = false.obs;
@@ -49,38 +47,40 @@ class SplashController extends GetxController {
     });
   }
 
+  Future<bool> _shouldShowOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('onboarding_completed') != true;
+  }
+
   void navigateToNextScreen() async {
     // Check if user has seen onboarding
-    final shouldShowOnboarding = await StorageService.shouldShowOnboarding();
-    
+    final shouldShowOnboarding = await _shouldShowOnboarding();
+
     if (shouldShowOnboarding) {
       // First time user - show onboarding
-      NavigationHelper.navigateTo(
-        AppLinks.onboard,
-        customTransition: Transition.circularReveal,
-        customDuration: const Duration(milliseconds: 500),
-        isOffAll: true, // Clear splash screen from stack
+      Get.offAll(
+        () => const OnboardingView(), // Change to match your actual class name
+        transition: Transition.circularReveal,
+        duration: const Duration(milliseconds: 500),
       );
     } else {
       // Returning user - check authentication
       final authController = Get.find<AuthController>();
       final isAuthenticated = await authController.checkAuthentication();
-      
+
       if (isAuthenticated) {
         // User is logged in - go to navbar
-        NavigationHelper.navigateTo(
-          AppLinks.navbar,
-          customTransition: Transition.circularReveal,
-          customDuration: const Duration(milliseconds: 500),
-          isOffAll: true, // Clear splash screen from stack
+        Get.offAll(
+          () => const NutriNavBar(),
+          transition: Transition.circularReveal,
+          duration: const Duration(milliseconds: 500),
         );
       } else {
         // User not logged in - go to auth
-        NavigationHelper.navigateTo(
-          AppLinks.auth,
-          customTransition: Transition.circularReveal,
-          customDuration: const Duration(milliseconds: 500),
-          isOffAll: true, // Clear splash screen from stack
+        Get.offAll(
+          () =>  AuthScreen(),
+          transition: Transition.circularReveal,
+          duration: const Duration(milliseconds: 500),
         );
       }
     }
@@ -89,14 +89,14 @@ class SplashController extends GetxController {
   // Method to be called when onboarding is completed
   static void onOnboardingCompleted() async {
     // Mark onboarding as seen
-    await StorageService.completeOnboarding();
-    
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_completed', true);
+
     // Navigate to auth screen
-    NavigationHelper.navigateTo(
-      AppLinks.auth,
-      customTransition: Transition.circularReveal,
-      customDuration: const Duration(milliseconds: 500),
-      isOffAll: true, // Clear onboarding from stack
+    Get.offAll(
+      () =>  AuthScreen(),
+      transition: Transition.circularReveal,
+      duration: const Duration(milliseconds: 500),
     );
   }
 }

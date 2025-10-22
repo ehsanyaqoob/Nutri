@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: BackPressHandler.handleBackPress,
-
       child: GetBuilder<ThemeController>(
         builder: (themeController) {
           final bool isDarkMode = themeController.isDarkMode;
@@ -43,7 +42,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         onAvatarTap: () =>
                             Get.toNamed(AppLinks.profile, arguments: null),
                         onNotificationTap: () => Get.toNamed(AppLinks.notify),
-                        onBookmarkTap: () => Get.toNamed(AppLinks.bookmark),
+                      ),
+                      10.height,
+                      MyText(
+                        text: 'Calendar View',
+                        size: 20,
+                        color: kDynamicText(context),
+                      ),10.height,
+                      MyText(
+                        text: 'Calendar View',
+                        size: 20,
+                        color: kDynamicText(context),
+                      ),10.height,
+                      MyText(
+                        text: 'Calendar View',
+                        size: 20,
+                        color: kDynamicText(context),
                       ),
 
                       const Gap(20),

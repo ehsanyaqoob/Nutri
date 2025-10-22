@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:nutri/constants/export.dart';
 
 extension MediaQueryEx on BuildContext {

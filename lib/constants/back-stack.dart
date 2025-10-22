@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:nutri/widget/toasts.dart';
+import 'package:nutri/widget/common/toasts.dart';
 
 class BackPressHandler {
   static DateTime? _lastPressed;

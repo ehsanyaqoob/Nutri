@@ -31,7 +31,9 @@ class ApiService {
     print('Response Status: ${response.statusCode}');
     print('Response Body: ${response.body}');
 
-    if (response.statusCode == 200 || response.statusCode == 400 || response.statusCode == 404) {
+    // ✅ FIX: Handle all common HTTP status codes including 401
+    if (response.statusCode >= 200 && response.statusCode <= 299) {
+      // Success codes (200-299)
       final Map<String, dynamic> data = json.decode(response.body);
       final apiResponse = ApiResponse<T>.fromJson(data, fromJson);
       
@@ -43,8 +45,40 @@ class ApiService {
         errors: apiResponse.errors,
         errorCode: apiResponse.errorCode,
       );
+    } else if (response.statusCode >= 400 && response.statusCode <= 499) {
+      // ✅ FIX: Handle all client errors (400-499) including 401
+      final Map<String, dynamic> data = json.decode(response.body);
+      final apiResponse = ApiResponse<T>.fromJson(data, fromJson);
+      
+      return ApiResponse<T>(
+        success: false, // Mark as failure for 4xx errors
+        message: apiResponse.message ?? _getDefaultErrorMessage(response.statusCode),
+        data: apiResponse.data,
+        statusCode: response.statusCode,
+        errors: apiResponse.errors,
+        errorCode: apiResponse.errorCode,
+      );
     } else {
+      // Server errors (500-599) and others
       throw NetworkException('Server responded with status: ${response.statusCode}');
+    }
+  }
+
+  // ✅ Helper method for default error messages
+  String _getDefaultErrorMessage(int statusCode) {
+    switch (statusCode) {
+      case 400:
+        return 'Bad Request';
+      case 401:
+        return 'Unauthorized';
+      case 403:
+        return 'Forbidden';
+      case 404:
+        return 'Not Found';
+      case 422:
+        return 'Validation Error';
+      default:
+        return 'Request failed with status $statusCode';
     }
   }
 

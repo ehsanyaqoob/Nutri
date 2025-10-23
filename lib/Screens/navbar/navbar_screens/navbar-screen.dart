@@ -1,5 +1,7 @@
 import 'package:nutri/constants/back-stack.dart';
 import 'package:nutri/constants/export.dart';
+import 'package:nutri/widget/common/scan/scan_fab_widget.dart';
+import 'package:nutri/widget/common/scan/scan_screen/scan_screen.dart';
 
 class NutriNavBar extends StatefulWidget {
   const NutriNavBar({super.key});
@@ -9,47 +11,56 @@ class NutriNavBar extends StatefulWidget {
 }
 
 class _NutriNavBarState extends State<NutriNavBar> {
+  late final NavController navController;
+
+  final _navItems = const [
+    NavItem(0, Assets.homefilled, Assets.homeunfilled),
+    NavItem(1, Assets.firefilled, Assets.fireunfilled),
+    NavItem(2, Assets.mealfilled, Assets.mealunfilled),
+    NavItem(3, Assets.menufilled, Assets.menuunfilled),
+  ];
+
   @override
   void initState() {
     super.initState();
-    Get.put(NavController(), permanent: true);
+    navController = Get.put(NavController(), permanent: true);
+  }
+
+  void _onNavItemTap(int index) {
+    HapticFeedback.lightImpact();
+    navController.changeIndex(index);
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ThemeController>(
       builder: (themeController) {
-        final isDarkMode = themeController.isDarkMode;
-
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+            statusBarIconBrightness: themeController.isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
             systemNavigationBarColor: kDynamicScaffoldBackground(context),
-            systemNavigationBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+            systemNavigationBarIconBrightness: themeController.isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
           ),
           child: WillPopScope(
-            onWillPop: BackPressHandler.handleBackPress,
+    onWillPop: BackPressHandler.handleBackPress,
             child: Scaffold(
-    // // Remove scaffold background to make content truly float
-    //           backgroundColor: Colors.transparent,              
-              body: Obx(() {
-                final navController = Get.find<NavController>();
-                return IndexedStack(
-                  index: navController.currentIndex.value,
-                  children: const [
-                    HomeScreen(),
-                    ProgressScreen(),
-                    MealScreen(),
-                    MenuScreen(),
-                    ScanScreen(),
-                  ],
-                );
-              }),
-              bottomNavigationBar: Obx(() {
-                final navController = Get.find<NavController>();
-                return _buildModernBottomNav(navController, context);
-              }),
+              backgroundColor: Colors.transparent,
+              body: Stack(
+                children: [
+                  _buildContent(),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: _buildBottomNav(context),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -57,178 +68,231 @@ class _NutriNavBarState extends State<NutriNavBar> {
     );
   }
 
-  Widget _buildModernBottomNav(NavController navController, BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final isTablet = width >= 600;
-
-    final navHeight = isTablet ? 90.0 : 80.0;
-    final iconSize = isTablet ? 26.0 : 24.0;
-    final fabSize = isTablet ? 68.0 : 62.0;
-    final horizontalPadding = isTablet ? 30.0 : 16.0;
-
-    return Container(
-
-      height: navHeight,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: 56,
-              decoration: BoxDecoration(
-                color: kDynamicNavigationBarBackground(context),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: kDynamicBorder(context),
-                  width: 2.8,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: kDynamicShadow(context).withOpacity(0.1), 
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Home
-                  _navItem(
-                    0,
-                    navController,
-                    Assets.homefilled,
-                    Assets.homeunfilled,
-                    iconSize,
-                    context,
-                  ),
-                  // Progress
-                  _navItem(
-                    1,
-                    navController,
-                    Assets.firefilled,
-                    Assets.fireunfilled,
-                    iconSize,
-                    context,
-                  ),
-                  // Meal
-                  _navItem(
-                    2,
-                    navController,
-                    Assets.mealfilled,
-                    Assets.mealunfilled,
-                    iconSize,
-                    context,
-                  ),
-                  // Menu
-                  _navItem(
-                    3,
-                    navController,
-                    Assets.menufilled,
-                    Assets.menuunfilled,
-                    iconSize,
-                    context,
-                  ),
-                ],
-              ),
-            ),
-          ),
-    
-    Gap(12),
-          // Floating Action Button (Scan) - Separate on right
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-              navController.changeIndex(4);
-            },
-            child: Container(
-              width: fabSize,
-              height: fabSize,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF9F4D), Color(0xFFFF8C1A)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                shape: BoxShape.circle,
-               
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  Assets.addfilled,
-                  height: iconSize + 6,
-                  width: iconSize + 6,
-                  color: kDynamicIcon(context),
-                ),
-              ),
-            ),
-          ),
+  Widget _buildContent() {
+    return Obx(() {
+      return IndexedStack(
+        index: navController.currentIndex.value.clamp(0, 4),
+        children: const [
+          HomeScreen(),
+          ProgressScreen(),
+          MealScreen(),
+          MenuScreen(),
+         // ScanScreen(),
         ],
-      ),
-    );
+      );
+    });
   }
 
-
-
-
-  Widget _navItem(
-    int index,
-    NavController navController,
-    String activeIcon,
-    String inactiveIcon,
-    double iconSize,
-    BuildContext context,
-  ) {
-    final isSelected = navController.currentIndex.value == index;
-    final iconPath = isSelected ? activeIcon : inactiveIcon;
-    final color = isSelected
-        ? kDynamicNavigationBarSelectedItem(context)
-        : kDynamicNavigationBarItem(context);
-
-    return Expanded(
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          HapticFeedback.lightImpact();
-          navController.changeIndex(index);
-        },
-        child: Container(
-          // Make container background transparent
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Center(
-            child: SvgPicture.asset(
-              iconPath,
-              height: iconSize,
-              width: iconSize,
-              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-            ),
-          ),
+  Widget _buildBottomNav(BuildContext context) {
+    final isTablet = MediaQuery.of(context).size.width >= 600;
+    final hasNotch = MediaQuery.of(context).viewPadding.bottom > 0;
+    return SafeArea(
+      top: false,
+      minimum: EdgeInsets.only(bottom: hasNotch ? 0 : 8),
+      child: Container(
+        height: isTablet ? 90 : 80,
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: isTablet ? 30 : 16,
+          vertical: 12,
+        ),
+        child: Row(
+          children: [
+            _buildNavContainer(context, isTablet),
+            SizedBox(width: isTablet ? 16 : 12),
+            ScanFabWidget(navController: navController),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildNavContainer(BuildContext context, bool isTablet) {
+    return Expanded(
+      child: Container(
+        height: 56,
+        decoration: BoxDecoration(
+          color: kDynamicNavigationBarBackground(context).withOpacity(0.95),
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: kDynamicBorder(context).withOpacity(0.3),
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: kDynamicShadow(context).withOpacity(0.15),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            _buildSliderIndicator(context, isTablet),
+            Row(
+              children: _navItems
+                  .map((item) => _buildNavItem(item, isTablet ? 26 : 24))
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSliderIndicator(BuildContext context, bool isTablet) {
+    return Obx(() {
+      final currentIndex = navController.currentIndex.value;
+      if (currentIndex >= 4) return const SizedBox.shrink();
+      final containerWidth =
+          MediaQuery.of(context).size.width -
+          ((isTablet ? 30 : 16) * 2) -
+          (isTablet ? 68 : 62) -
+          (isTablet ? 16 : 12);
+      final itemWidth = containerWidth / _navItems.length;
+      final sliderWidth = itemWidth - 16;
+      final sliderPosition =
+          (currentIndex * itemWidth) + ((itemWidth - sliderWidth) / 2);
+      return AnimatedPositioned(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        left: sliderPosition,
+        top: 8,
+        child: Container(
+          width: sliderWidth,
+          height: 40,
+          decoration: BoxDecoration(
+            color: kDynamicPrimary(context),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _buildNavItem(NavItem item, double iconSize) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onNavItemTap(item.index),
+        child: Obx(() {
+          final isSelected = navController.currentIndex.value == item.index;
+          return Container(
+            height: 60,
+            child: Center(
+              child: AnimatedScale(
+                duration: const Duration(milliseconds: 300),
+                scale: isSelected ? 1.15 : 1.0,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: isSelected ? 0.0 : 1.0,
+                      child: SvgPicture.asset(
+                        item.inactiveIcon,
+                        height: iconSize,
+                        width: iconSize,
+                        color: _getInactiveIconColor(item.index),
+                      ),
+                    ),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: isSelected ? 1.0 : 0.0,
+                      child: SvgPicture.asset(
+                        item.activeIcon,
+                        height: iconSize,
+                        width: iconSize,
+                        color: _getActiveIconColor(item.index),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Color _getActiveIconColor(int index) {
+    return kDynamicIconOnPrimary(context);
+  }
+
+  Color _getInactiveIconColor(int index) {
+    return kDynamicNavigationBarItem(context);
+  }
+}
+
+class NavItem {
+  final int index;
+  final String activeIcon;
+  final String inactiveIcon;
+  const NavItem(this.index, this.activeIcon, this.inactiveIcon);
 }
 
 class NavController extends GetxController {
   final RxInt currentIndex = 0.obs;
+  final RxInt previousIndex = 0.obs;
+  final RxList<int> navigationHistory = <int>[0].obs; // Track navigation history
 
   @override
   void onInit() {
     super.onInit();
-    currentIndex.value = 0;
+    _resetToHome();
   }
 
   void changeIndex(int index) {
-    if (currentIndex.value != index) {
+    if (index >= 0 && index <= 4 && currentIndex.value != index) {
+      previousIndex.value = currentIndex.value;
       currentIndex.value = index;
+      
+      // Add to navigation history (avoid duplicates in sequence)
+      if (navigationHistory.isEmpty || navigationHistory.last != index) {
+        navigationHistory.add(index);
+        
+        // Keep only last 10 items to prevent memory issues
+        if (navigationHistory.length > 10) {
+          navigationHistory.removeAt(0);
+        }
+      }
+      update();
     }
   }
 
-  void resetToHome() {
-    currentIndex.value = 0;
+  void setPreviousIndex() {
+    previousIndex.value = currentIndex.value;
   }
+
+ void resetToHome() {
+  changeIndex(0);
+}
+
+
+  void _resetToHome() {
+    currentIndex.value = 0;
+    previousIndex.value = 0;
+    navigationHistory.clear();
+    navigationHistory.add(0); // Start with home
+    update();
+  }
+
+  // New method: Go back to previous tab in history
+  bool goBack() {
+    if (navigationHistory.length > 1) {
+      // Remove current index
+      navigationHistory.removeLast();
+      
+      // Get previous index
+      final previousIndex = navigationHistory.last;
+      currentIndex.value = previousIndex;
+      update();
+      
+      return true; // Back navigation handled
+    }
+    return false; // No history, should close app
+  }
+
+  // Get navigation trail for debugging
+  List<int> get navigationTrail => List.from(navigationHistory);
 }

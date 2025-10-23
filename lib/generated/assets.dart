@@ -132,6 +132,7 @@ class Assets {
 
   static const String progressfilled = "assets/images/progressfilled.svg";
   static const String progressunfilled = "assets/images/progressunfilled.svg";
+  static const String ai = "assets/images/ai.svg";
 
   static const String scanfilled = "assets/images/scanfilled.svg";
   static const String scanunfilled = "assets/images/scanunfilled.svg";

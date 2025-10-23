@@ -125,184 +125,157 @@ class AuthController extends GetxController {
   }
 
   Future<void> signIn() async {
-    try {
-      final email = emailController.text.trim();
-      final password = passwordController.text.trim();
+  try {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-      if (!_validateSignInInputs(email, password)) return;
+    if (!_validateSignInInputs(email, password)) return;
 
-      isLoading(true);
+    isLoading(true);
 
-      final response = await _apiService.post<Map<String, dynamic>>(
-        EndPoints.login,
-        {'email': email, 'password': password},
-        false,
-        (data) => data as Map<String, dynamic>,
+    final response = await _apiService.post<Map<String, dynamic>>(
+      EndPoints.login,
+      {'email': email, 'password': password},
+      false,
+      (data) => data as Map<String, dynamic>,
+    );
+
+    if (response.success && response.data != null) {
+      // Extract data directly from response.data
+      final token =
+          response.data!['token'] ?? response.data!['access_token'] ?? '';
+      final name =
+          response.data!['name'] ?? response.data!['user_name'] ?? '';
+      final userId =
+          response.data!['user_id'] ?? response.data!['id']?.toString() ?? '';
+
+      await _saveUserSession(
+        token: token,
+        email: email,
+        name: name,
+        userId: userId,
       );
 
-      if (response.success && response.data != null) {
-        // Extract data directly from response.data
-        final token =
-            response.data!['token'] ?? response.data!['access_token'] ?? '';
-        final name =
-            response.data!['name'] ?? response.data!['user_name'] ?? '';
-        final userId =
-            response.data!['user_id'] ?? response.data!['id']?.toString() ?? '';
+      isLoggedIn.value = true;
+      clearTextFields();
 
-        await _saveUserSession(
-          token: token,
-          email: email,
-          name: name,
-          userId: userId,
-        );
-
-        isLoggedIn.value = true;
-        clearTextFields();
-        AppToast.success('Welcome back, $name!');
-
-        NavigationHelper.navigateTo(
-          AppLinks.navbar,
-          customTransition: Transition.circularReveal,
-          customDuration: const Duration(milliseconds: 500),
-        );
-      } else {
-        AppToast.error(response.message);
-      }
-    } catch (e) {
-      AppToast.error('Login failed. Please try again.');
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  Future<void> signUp() async {
-    try {
-      final email = emailController.text.trim();
-      final password = passwordController.text.trim();
-      final confirmPassword = confirmPasswordController.text.trim();
-      final name = nameController.text.trim();
-
-      if (!_validateSignUpInputs(email, password, confirmPassword, name))
-        return;
-
-      if (!agreeToTerms.value) {
-        AppToast.error('Please agree to terms and conditions');
-        return;
-      }
-
-      isLoading(true);
-
-      final response = await _apiService.post<dynamic>(
-        EndPoints.register,
-        {
-          'name': name,
-          'email': email,
-          'password': password,
-          'password_confirmation': confirmPassword,
-        },
-        false,
-        (data) => data, // Just return raw data
+      NavigationHelper.navigateTo(
+        AppLinks.navbar,
+        customTransition: Transition.circularReveal,
+        customDuration: const Duration(milliseconds: 500),
       );
-
-      if (response.success) {
-        // Show OTP screen after successful registration
-        showOtpScreen.value = true;
-        AppToast.success(response.message); // Use the message from API
-      } else {
-        AppToast.error(response.message);
-      }
-    } catch (e) {
-      AppToast.error('Registration failed. Please try again.');
-    } finally {
-      isLoading(false);
+    } else {
+     
+      AppToast.error(response.message ?? 'Login failed');
     }
+  } catch (e) {
+    AppToast.error('Network error. Please check your connection.');
+  } finally {
+    isLoading(false);
   }
+}
 
-  Future<void> verifyOtp() async {
-    try {
-      final otp = otpController.text.trim();
-      final email = emailController.text.trim();
+Future<void> signUp() async {
+  try {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
+    final name = nameController.text.trim();
 
-      if (otp.isEmpty || otp.length != 6) {
-        AppToast.error('Please enter a valid 6-digit OTP');
-        return;
-      }
+    if (!_validateSignUpInputs(email, password, confirmPassword, name))
+      return;
 
-      // For testing with dummy OTP
-      if (otp != '123456') {
-        AppToast.error('Invalid OTP. Please try again.');
-        return;
-      }
+    if (!agreeToTerms.value) {
+      AppToast.error('Please agree to terms and conditions');
+      return;
+    }
 
-      isLoading(true);
+    isLoading(true);
 
-      try {
-        // Try the API call, but if it fails (404, etc.), proceed with dummy data
-        final response = await _apiService.post<Map<String, dynamic>>(
-          EndPoints.verifyOtp,
-          {'email': email, 'otp': otp},
-          false,
-          (data) => data as Map<String, dynamic>,
-        );
+    final response = await _apiService.post<dynamic>(
+      EndPoints.register,
+      {
+        'name': name,
+        'email': email,
+        'password': password,
+        'password_confirmation': confirmPassword,
+      },
+      false,
+      (data) => data,
+    );
 
-        if (response.success && response.data != null) {
-          // If API works, use real data
-          final token =
-              response.data!['token'] ?? response.data!['access_token'] ?? '';
-          final name =
-              response.data!['name'] ?? response.data!['user_name'] ?? '';
-          final userId =
-              response.data!['user_id'] ??
-              response.data!['id']?.toString() ??
-              '';
+    if (response.success) {
+      showOtpScreen.value = true;
+      AppToast.success(response.message ?? 'Registration successful'); 
+    } else {
+      AppToast.error(response.message ?? 'Registration failed');
+    }
+  } catch (e) {
+    AppToast.error('Network error. Please try again.');
+  } finally {
+    isLoading(false);
+  }
+}
 
-          await _saveUserSession(
-            token: token.isNotEmpty
-                ? token
-                : 'dummy_token_${DateTime.now().millisecondsSinceEpoch}',
-            email: email,
-            name: name.isNotEmpty ? name : email.split('@').first,
-            userId: userId.isNotEmpty
-                ? userId
-                : 'user_${DateTime.now().millisecondsSinceEpoch}',
-          );
-        } else {
-          // If API returns error but we have valid OTP, proceed with dummy data
-          await _saveUserSession(
-            token: 'dummy_token_${DateTime.now().millisecondsSinceEpoch}',
-            email: email,
-            name: email.split('@').first,
-            userId: 'user_${DateTime.now().millisecondsSinceEpoch}',
-          );
-        }
-      } catch (e) {
-        // If API call fails completely, still proceed with dummy data
-        print('OTP API failed, using dummy session: $e');
-        await _saveUserSession(
-          token: 'dummy_token_${DateTime.now().millisecondsSinceEpoch}',
-          email: email,
-          name: email.split('@').first,
-          userId: 'user_${DateTime.now().millisecondsSinceEpoch}',
-        );
-      }
+Future<void> verifyOtp() async {
+  try {
+    final otp = otpController.text.trim();
+    final email = emailController.text.trim();
+
+    if (otp.isEmpty || otp.length != 6) {
+      AppToast.error('Please enter a valid 6-digit OTP');
+      return;
+    }
+
+    isLoading(true);
+
+    final response = await _apiService.post<Map<String, dynamic>>(
+      EndPoints.verifyOtp,
+      {'email': email, 'otp': otp},
+      false,
+      (data) => data as Map<String, dynamic>,
+    );
+
+    if (response.success && response.data != null) {
+      // If API works, use real data
+      final token =
+          response.data!['token'] ?? response.data!['access_token'] ?? '';
+      final name =
+          response.data!['name'] ?? response.data!['user_name'] ?? '';
+      final userId =
+          response.data!['user_id'] ??
+          response.data!['id']?.toString() ??
+          '';
+
+      await _saveUserSession(
+        token: token.isNotEmpty
+            ? token
+            : 'dummy_token_${DateTime.now().millisecondsSinceEpoch}',
+        email: email,
+        name: name.isNotEmpty ? name : email.split('@').first,
+        userId: userId.isNotEmpty
+            ? userId
+            : 'user_${DateTime.now().millisecondsSinceEpoch}',
+      );
 
       isLoggedIn.value = true;
       showOtpScreen.value = false;
       clearTextFields();
-      AppToast.success('Email verified successfully!');
-
+      AppToast.success(response.message ?? 'Email verified successfully!'); 
       NavigationHelper.navigateTo(
         AppLinks.navbar,
         customTransition: Transition.fadeIn,
         customDuration: const Duration(milliseconds: 500),
       );
-    } catch (e) {
-      AppToast.error('OTP verification failed. Please try again.');
-    } finally {
-      isLoading(false);
+    } else {
+      AppToast.error(response.message ?? 'Invalid OTP. Please try again.');
     }
+  } catch (e) {
+    AppToast.error('Network error. Please try again.');
+  } finally {
+    isLoading(false);
   }
-
+}
   Future<void> resendOtp() async {
     try {
       final email = emailController.text.trim();
@@ -322,7 +295,7 @@ class AuthController extends GetxController {
       );
 
       if (response.success) {
-        AppToast.success(response.message); // Use message from API
+        AppToast.success(response.message); 
       } else {
         AppToast.error(response.message);
       }
@@ -332,45 +305,50 @@ class AuthController extends GetxController {
       isLoading(false);
     }
   }
+Future<void> logout() async {
+  try {
+    isLoading(true);
+    await _apiService.post<dynamic>(
+      EndPoints.logout,
+      {},
+      true,
+      (data) => data,
+    );
 
-  Future<void> logout() async {
-    try {
-      isLoading(true);
+    userToken.value = '';
+    userEmail.value = '';
+    userName.value = '';
+    userId.value = '';
+    isLoggedIn.value = false;
+    rememberMe.value = false;
 
-      // Call logout API if needed
-      await _apiService.post<dynamic>(
-        EndPoints.logout,
-        {},
-        true,
-        (data) => data,
-      );
+    await Storage.clearUserData();
+    clearTextFields();
 
-      userToken.value = '';
-      userEmail.value = '';
-      userName.value = '';
-      userId.value = '';
-      isLoggedIn.value = false;
-      rememberMe.value = false;
+    AppToast.success('Logged out successfully');
 
-      await Storage.clearUserData();
-      clearTextFields();
-
-      AppToast.success('Logged out successfully');
-
-      NavigationHelper.navigateTo(
-        AppLinks.auth,
-        customTransition: Transition.circularReveal,
-        customDuration: const Duration(milliseconds: 500),
-      );
-    } catch (e) {
-      // Even if API call fails, clear local data
-      await Storage.clearUserData();
-      AppToast.success('Logged out successfully');
-    } finally {
-      isLoading(false);
+    if (Get.isRegistered<NavController>()) {
+      Get.find<NavController>().resetToHome();
     }
-  }
 
+    // Then navigate
+    NavigationHelper.navigateTo(
+      AppLinks.auth,
+      customTransition: Transition.circularReveal,
+      customDuration: const Duration(milliseconds: 500),
+    );
+  } catch (e) {
+    await Storage.clearUserData();
+    
+    if (Get.isRegistered<NavController>()) {
+      Get.find<NavController>().resetToHome();
+    }
+    
+    AppToast.success('Logged out successfully');
+  } finally {
+    isLoading(false);
+  }
+}
   Future<void> _saveUserSession({
     required String token,
     required String email,

@@ -236,7 +236,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                   MyText(
                                     text: data['title'],
                                     color: kDynamicText(context),
-                                    size: 22.0,
+                                    size: 14.0,
                                     weight: FontWeight.bold,
                                   ),
                                 ],

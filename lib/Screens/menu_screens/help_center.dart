@@ -64,188 +64,185 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: BackPressHandler.handleBackPress,
-      child: GetBuilder<ThemeController>(
-        builder: (themeController) {
-          final bool isDarkMode = themeController.isDarkMode;
-
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: isDarkMode
-                  ? Brightness.light
-                  : Brightness.dark,
-              systemNavigationBarColor: kDynamicScaffoldBackground(context),
-              systemNavigationBarIconBrightness: isDarkMode
-                  ? Brightness.light
-                  : Brightness.dark,
+    return GetBuilder<ThemeController>(
+      builder: (themeController) {
+        final bool isDarkMode = themeController.isDarkMode;
+    
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
+            systemNavigationBarColor: kDynamicScaffoldBackground(context),
+            systemNavigationBarIconBrightness: isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
+          ),
+          child: Scaffold(
+            appBar: CustomAppBar(
+              title: 'Help Center',
+              centerTitle: false,
+              showLeading: true,
+              onBackTap: () {
+                Get.back();
+              },
             ),
-            child: Scaffold(
-              appBar: CustomAppBar(
-                title: 'Help Center',
-                centerTitle: false,
-                showLeading: true,
-                onBackTap: () {
-                  Get.back();
-                },
-              ),
-              backgroundColor: kDynamicScaffoldBackground(context),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: AppSizes.DEFAULT,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Gap(20),
-                      
-                      // Header Section
-                      Center(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.help_outline,
-                              size: 64,
-                              color: kPrimaryColor,
-                            ),
-                            16.height,
-                            MyText(
-                              text: "How can we help you?",
-                              size: 24,
-                              weight: FontWeight.bold,
-                              color: kDynamicText(context),
-                            ),
-                            8.height,
-                            MyText(
-                              text: "Find answers to common questions about Nutri AI",
-                              size: 16,
-                              color: kDynamicText(context)!.withOpacity(0.7),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+            backgroundColor: kDynamicScaffoldBackground(context),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: AppSizes.DEFAULT,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(20),
+                    
+                    // Header Section
+                    Center(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.help_outline,
+                            size: 64,
+                            color: kPrimaryColor,
+                          ),
+                          16.height,
+                          MyText(
+                            text: "How can we help you?",
+                            size: 24,
+                            weight: FontWeight.bold,
+                            color: kDynamicText(context),
+                          ),
+                          8.height,
+                          MyText(
+                            text: "Find answers to common questions about Nutri AI",
+                            size: 16,
+                            color: kDynamicText(context)!.withOpacity(0.7),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      32.height,
-
-                      // Quick Tips Section
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: kPrimaryColor.withOpacity(0.3)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.lightbulb_outline,
-                                  color: kPrimaryColor,
-                                  size: 20,
-                                ),
-                                8.width,
-                                MyText(
-                                  text: "Quick Tips",
-                                  size: 18,
-                                  weight: FontWeight.bold,
-                                  color: kPrimaryColor,
-                                ),
-                              ],
-                            ),
-                            12.height,
-                            _buildTipItem("💡 Use good lighting for better scan accuracy"),
-                            8.height,
-                            _buildTipItem("💡 Scan before eating for portion tracking"),
-                            8.height,
-                            _buildTipItem("💡 Update your goals regularly for better insights"),
-                            8.height,
-                            _buildTipItem("💡 Contact support for unrecognized foods"),
-                          ],
-                        ),
+                    ),
+                    32.height,
+    
+                    // Quick Tips Section
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: kPrimaryColor.withOpacity(0.3)),
                       ),
-                      32.height,
-
-                      // FAQ Section
-                      MyText(
-                        text: "Frequently Asked Questions",
-                        size: 20,
-                        weight: FontWeight.bold,
-                        color: kDynamicText(context),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.lightbulb_outline,
+                                color: kPrimaryColor,
+                                size: 20,
+                              ),
+                              8.width,
+                              MyText(
+                                text: "Quick Tips",
+                                size: 18,
+                                weight: FontWeight.bold,
+                                color: kPrimaryColor,
+                              ),
+                            ],
+                          ),
+                          12.height,
+                          _buildTipItem("💡 Use good lighting for better scan accuracy"),
+                          8.height,
+                          _buildTipItem("💡 Scan before eating for portion tracking"),
+                          8.height,
+                          _buildTipItem("💡 Update your goals regularly for better insights"),
+                          8.height,
+                          _buildTipItem("💡 Contact support for unrecognized foods"),
+                        ],
                       ),
-                      16.height,
-
-                      // FAQ List
-                      ..._faqs.map((faq) => _buildFAQItem(faq)).toList(),
-
-                      // Contact Support Section
-                      40.height,
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: kDynamicContainer(context),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: kDynamicBorder(context)!),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.support_agent,
-                              size: 48,
-                              color: kPrimaryColor,
-                            ),
-                            16.height,
-                            MyText(
-                              text: "Still need help?",
-                              size: 18,
-                              weight: FontWeight.bold,
-                              color: kDynamicText(context),
-                            ),
-                            8.height,
-                            MyText(
-                              text: "Our support team is here to assist you with any issues or questions",
-                              size: 14,
-                              color: kDynamicText(context)!.withOpacity(0.7),
-                              textAlign: TextAlign.center,
-                            ),
-                            16.height,
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Add contact support action
-                                  _contactSupport();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kPrimaryColor,
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: MyText(
-                                  text: "Contact Support",
-                                  size: 16,
-                                  color: Colors.white,
-                                  weight: FontWeight.w600,
+                    ),
+                    32.height,
+    
+                    // FAQ Section
+                    MyText(
+                      text: "Frequently Asked Questions",
+                      size: 20,
+                      weight: FontWeight.bold,
+                      color: kDynamicText(context),
+                    ),
+                    16.height,
+    
+                    // FAQ List
+                    ..._faqs.map((faq) => _buildFAQItem(faq)).toList(),
+    
+                    // Contact Support Section
+                    40.height,
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: kDynamicContainer(context),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: kDynamicBorder(context)!),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.support_agent,
+                            size: 48,
+                            color: kPrimaryColor,
+                          ),
+                          16.height,
+                          MyText(
+                            text: "Still need help?",
+                            size: 18,
+                            weight: FontWeight.bold,
+                            color: kDynamicText(context),
+                          ),
+                          8.height,
+                          MyText(
+                            text: "Our support team is here to assist you with any issues or questions",
+                            size: 14,
+                            color: kDynamicText(context)!.withOpacity(0.7),
+                            textAlign: TextAlign.center,
+                          ),
+                          16.height,
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Add contact support action
+                                _contactSupport();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kPrimaryColor,
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
+                              child: MyText(
+                                text: "Contact Support",
+                                size: 16,
+                                color: Colors.white,
+                                weight: FontWeight.w600,
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      40.height,
-                    ],
-                  ),
+                    ),
+                    40.height,
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -255,7 +252,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       children: [
         MyText(
           text: text,
-          size: 14,
+          size: 12,
           color: kDynamicText(context),
         ),
       ],

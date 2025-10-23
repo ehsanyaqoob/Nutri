@@ -1,6 +1,7 @@
-
 import 'package:nutri/constants/export.dart';
-
+import 'package:nutri/widget/common/scan/scan_screen/ai_chat_screen.dart';
+import 'package:nutri/widget/common/scan/scan_screen/day_meal.dart';
+import 'package:nutri/widget/common/scan/scan_screen/scan_screen.dart';
 
 class RouteConfig {
   final String name;
@@ -43,6 +44,9 @@ class AppLinks {
   static const privacyPolicy = '/privacy_policy';
   static const helpCenter = '/help_center';
   static const inviteFriends = '/invite_friends';
+  static const scannscreen = '/scanscreen';
+  static const daymealsscreen = '/daymealscreen';
+  static const chataiscreen = '/chataiscreen';
 }
 
 class AppRoutes {
@@ -173,6 +177,27 @@ class AppRoutes {
     AppLinks.inviteFriends: RouteConfig(
       name: AppLinks.inviteFriends,
       page: () => InviteFriendsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
+
+    
+    // Scan screens
+    AppLinks.scannscreen: RouteConfig(
+      name: AppLinks.scannscreen,
+      page: () => ScanScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
+    AppLinks.daymealsscreen: RouteConfig(
+      name: AppLinks.daymealsscreen,
+      page: () => DayMealScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 400),
+    ),
+    AppLinks.chataiscreen: RouteConfig(
+      name: AppLinks.chataiscreen,
+      page: () => ChatScreen(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 400),
     ),

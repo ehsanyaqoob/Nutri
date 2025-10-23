@@ -1,4 +1,3 @@
-import 'package:nutri/constants/back-stack.dart';
 import 'package:nutri/constants/export.dart';
 import 'package:nutri/widget/bottomsheets/helper-sheets.dart';
 
@@ -66,16 +65,14 @@ class _MenuScreenState extends State<MenuScreen> {
                 ? Brightness.light
                 : Brightness.dark,
           ),
-          child: WillPopScope(
-            onWillPop: BackPressHandler.handleBackPress,
-
-            child: Scaffold(
-              backgroundColor: kDynamicScaffoldBackground(context),
-              appBar: GenericAppBar(title: "Profile"),
-              body: SafeArea(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Padding(
+          child: Scaffold(
+            backgroundColor: kDynamicScaffoldBackground(context),
+            appBar: GenericAppBar(title: "Profile"),
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     padding: AppSizes.DEFAULT,
                     child: Column(
                       children: [
@@ -93,11 +90,15 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                         8.0.height,
                         _LogoutButton(),
+                        // Add extra padding at bottom for navigation bar
+                        SizedBox(
+                          height: MediaQuery.of(context).padding.bottom + 80,
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         );

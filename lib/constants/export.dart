@@ -78,7 +78,6 @@ export 'package:nutri/Screens/navbar/menu/menu-screen.dart';
 export 'package:nutri/Screens/navbar/profile/profile-screen.dart';
 export 'package:nutri/Screens/navbar/progress/progress-screen.dart';
 export 'package:nutri/Screens/navbar/meal/meal_screen.dart';
-export 'package:nutri/Screens/navbar/scan/scan-screen.dart';
 export 'package:nutri/Screens/common/book-mark-screen.dart';
 
 // ============================================================================
